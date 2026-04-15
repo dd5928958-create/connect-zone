@@ -480,6 +480,21 @@ export default function AdminPage() {
 
               <div>
                 <Label className="text-[#111111] font-medium mb-2 block">
+                  Image de profil (URL)
+                </Label>
+                <Input
+                  type="url"
+                  value={editingProvider.image}
+                  onChange={(e) =>
+                    setEditingProvider({ ...editingProvider, image: e.target.value })
+                  }
+                  placeholder="/images/directory_plumber.jpg"
+                  className="rounded-xl border-2 border-black"
+                />
+              </div>
+
+              <div>
+                <Label className="text-[#111111] font-medium mb-2 block">
                   Description courte
                 </Label>
                 <Input
