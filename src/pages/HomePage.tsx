@@ -264,11 +264,10 @@ export default function HomePage() {
             href="https://wa.me/33612345678?text=Bonjour%20ConnectZone%20je%20souhaite%20signaler%20un%20prestataire"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline decoration-red-900 decoration-2 hover:text-red-700"
+            className="text-[#2563eb] underline decoration-[#2563eb] decoration-2 hover:text-[#1d4ed8]"
           >
             ici
-          </a>
-          {' '}pour qu'on puisse intervenir.
+          </a>{' '}pour qu'on puisse intervenir.
         </div>
       </section>
 
