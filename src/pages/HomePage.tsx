@@ -258,8 +258,17 @@ export default function HomePage() {
       </section>
 
       <section className="px-4 mb-12">
-        <div className="max-w-5xl mx-auto rounded-[28px] border-2 border-red-500 bg-red-50 px-6 py-6 shadow-[0_18px_40px_rgba(0,0,0,0.14)] animate-pulse text-red-700 font-bold text-center text-base md:text-lg">
-          Si un prestataire ne se comporte pas bien, signalez-le ici pour qu'on puisse intervenir.
+        <div className="max-w-5xl mx-auto rounded-[28px] border-[4px] border-red-600 bg-red-100 px-6 py-8 shadow-[0_20px_50px_rgba(255,0,0,0.08)] animate-pulse text-red-900 font-black text-center text-base md:text-xl tracking-tight">
+          Si un prestataire ne se comporte pas bien, signalez-le 
+          <a
+            href="https://wa.me/33612345678?text=Bonjour%20ConnectZone%20je%20souhaite%20signaler%20un%20prestataire"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-red-900 decoration-2 hover:text-red-700"
+          >
+            ici
+          </a>
+          {' '}pour qu'on puisse intervenir.
         </div>
       </section>
 
