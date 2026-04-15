@@ -257,33 +257,34 @@ export default function ProviderProfilePage() {
                       key={review.id}
                       className="bg-gray-50 rounded-xl p-4 border-2 border-gray-100"
                     >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-bold text-[#111111]">
-                        {review.author}
-                      </span>
-                      <div className="flex items-center">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-4 h-4 ${
-                              i < review.rating
-                                ? 'fill-[#FFD166] text-[#FFD166]'
-                                : 'text-gray-300'
-                            }`}
-                          />
-                        ))}
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-bold text-[#111111]">
+                          {review.author}
+                        </span>
+                        <div className="flex items-center">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-4 h-4 ${
+                                i < review.rating
+                                  ? 'fill-[#FFD166] text-[#FFD166]'
+                                  : 'text-gray-300'
+                              }`}
+                            />
+                          ))}
+                        </div>
                       </div>
+                      <p className="text-[#2A2A2A] text-sm">{review.comment}</p>
+                      <p className="text-[#2A2A2A]/50 text-xs mt-2">
+                        {new Date(review.date).toLocaleDateString('fr-FR', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </p>
                     </div>
-                    <p className="text-[#2A2A2A] text-sm">{review.comment}</p>
-                    <p className="text-[#2A2A2A]/50 text-xs mt-2">
-                      {new Date(review.date).toLocaleDateString('fr-FR', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </p>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
 
