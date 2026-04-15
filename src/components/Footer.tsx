@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <Link to="/" className="text-2xl font-black font-['Montserrat'] mb-4 block">
-              <span className="text-[#4B6BFB]">Connect</span>
+              <span className="text-[#1D4ED8]">Connect</span>
               <span className="text-[#FF8C00]">Zone</span>
             </Link>
             <p className="text-gray-400 text-sm mb-4">

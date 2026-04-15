@@ -161,6 +161,19 @@ export default function AdminPage() {
     setIsEditDialogOpen(true);
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !editingProvider) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setEditingProvider({ ...editingProvider, image: reader.result });
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSave = async () => {
     if (!editingProvider) return;
 
@@ -480,8 +493,17 @@ export default function AdminPage() {
 
               <div>
                 <Label className="text-[#111111] font-medium mb-2 block">
-                  Image de profil (URL)
+                  Image de profil
                 </Label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="w-full rounded-xl border-2 border-black bg-white px-3 py-2"
+                />
+                <p className="text-sm text-[#666666] mt-2">
+                  Téléversez une image pour le prestataire. Si vous souhaitez utiliser un lien, copiez-le directement dans le champ ci-dessous.
+                </p>
                 <Input
                   type="url"
                   value={editingProvider.image}
@@ -489,8 +511,22 @@ export default function AdminPage() {
                     setEditingProvider({ ...editingProvider, image: e.target.value })
                   }
                   placeholder="/images/directory_plumber.jpg"
-                  className="rounded-xl border-2 border-black"
+                  className="rounded-xl border-2 border-black mt-3"
                 />
+                {editingProvider.image && (
+                  <div className="mt-4">
+                    <span className="text-sm font-medium text-[#111111]">
+                      Aperçu de l’image
+                    </span>
+                    <div className="mt-2 w-full max-w-xs overflow-hidden rounded-2xl border-2 border-black">
+                      <img
+                        src={editingProvider.image}
+                        alt="Aperçu prestataire"
+                        className="w-full object-cover"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div>
