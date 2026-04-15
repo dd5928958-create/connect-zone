@@ -237,7 +237,7 @@ export default function HomePage() {
           {/* Hero Content */}
           <div className="lg:w-[45%] p-6 md:p-10 lg:p-12 flex flex-col justify-center">
             <h1 className="hero-headline text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black font-['Montserrat'] text-[#111111] uppercase leading-tight tracking-tight mb-4 md:mb-6">
-              Trouvez le<br />bon pro
+              Trouvez le<br />bon prestataire
             </h1>
             <p className="hero-subtext text-base md:text-lg text-[#2A2A2A] mb-6 md:mb-8 leading-relaxed">
               Comparez les prestataires près de chez vous et contactez-les directement par WhatsApp.
@@ -380,7 +380,7 @@ export default function HomePage() {
 
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black font-['Montserrat'] text-white text-center uppercase mb-12 md:mb-16">
-            Le pro du mois
+            Le prestataire du mois
           </h2>
 
           {featuredProvider && (
@@ -542,7 +542,7 @@ export default function HomePage() {
                     Pas de commissions
                   </h4>
                   <p className="text-[#2A2A2A]">
-                    Vous payez directement le pro
+                    Vous payez directement le prestataire
                   </p>
                 </div>
               </div>
