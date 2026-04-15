@@ -130,16 +130,16 @@ export default function Footer() {
         {/* Bottom */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            © 2024 ConnectZone. Tous droits réservés.
+            © 2026 ConnectZone. Tous droits réservés.
           </p>
           <div className="flex space-x-6 text-sm">
-            <Link to="#" className="text-gray-400 hover:text-white transition-colors">
+            <Link to="/mentions-legales" className="text-gray-400 hover:text-white transition-colors">
               Mentions légales
             </Link>
-            <Link to="#" className="text-gray-400 hover:text-white transition-colors">
+            <Link to="/conditions-utilisation" className="text-gray-400 hover:text-white transition-colors">
               Conditions d'utilisation
             </Link>
-            <Link to="#" className="text-gray-400 hover:text-white transition-colors">
+            <Link to="/politique-confidentialite" className="text-gray-400 hover:text-white transition-colors">
               Politique de confidentialité
             </Link>
           </div>

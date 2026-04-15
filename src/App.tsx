@@ -6,6 +6,9 @@ import ProvidersPage from '@/pages/ProvidersPage';
 import ProviderProfilePage from '@/pages/ProviderProfilePage';
 import AdminPage from '@/pages/AdminPage';
 import ContactPage from '@/pages/ContactPage';
+import MentionsLegalesPage from '@/pages/MentionsLegalesPage';
+import ConditionsUtilisationPage from '@/pages/ConditionsUtilisationPage';
+import PolitiqueConfidentialitePage from '@/pages/PolitiqueConfidentialitePage';
 import Footer from '@/components/Footer';
 
 function App() {
@@ -19,6 +22,9 @@ function App() {
           <Route path="/prestataire/:id" element={<ProviderProfilePage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/mentions-legales" element={<MentionsLegalesPage />} />
+          <Route path="/conditions-utilisation" element={<ConditionsUtilisationPage />} />
+          <Route path="/politique-confidentialite" element={<PolitiqueConfidentialitePage />} />
         </Routes>
         <Footer />
         <Toaster />
