@@ -151,6 +151,7 @@ export default function AdminPage() {
       rating: 5,
       reviewCount: 0,
       reviews: [],
+      adminReview: '',
       category: categories[1],
       availability: 'Lun-Ven 9h-18h',
       priceRange: 'Sur devis',
@@ -597,6 +598,21 @@ export default function AdminPage() {
                     className="rounded-xl border-2 border-black"
                   />
                 </div>
+              </div>
+
+              <div>
+                <Label className="text-[#111111] font-medium mb-2 block">
+                  Avis admin
+                </Label>
+                <Textarea
+                  value={editingProvider.adminReview ?? ''}
+                  onChange={(e) =>
+                    setEditingProvider({ ...editingProvider, adminReview: e.target.value })
+                  }
+                  rows={4}
+                  placeholder="Entrez un avis qui apparaîtra sur la fiche du prestataire"
+                  className="rounded-xl border-2 border-black"
+                />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">

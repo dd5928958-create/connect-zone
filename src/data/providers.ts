@@ -15,6 +15,7 @@ export interface Provider {
   rating: number;
   reviewCount: number;
   reviews: Review[];
+  adminReview?: string;
   category: string;
   availability: string;
   priceRange: string;

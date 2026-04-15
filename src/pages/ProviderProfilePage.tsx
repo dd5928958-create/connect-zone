@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
-import { ArrowLeft, MapPin, MessageCircle, Shield, Star, Clock, CheckCircle, Award, Calendar } from 'lucide-react';
+import { ArrowLeft, MapPin, MessageCircle, Shield, Star, Clock, CheckCircle, Award, Calendar, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -12,6 +12,7 @@ export default function ProviderProfilePage() {
   const navigate = useNavigate();
   const [provider, setProvider] = useState<Provider | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [shareMessage, setShareMessage] = useState('');
 
   useEffect(() => {
     const fetchProvider = async () => {
@@ -79,6 +80,30 @@ export default function ProviderProfilePage() {
   }
 
   const whatsappLink = `https://wa.me/${provider.phone.replace(/\+/g, '')}?text=Bonjour ${provider.name}, je vous contacte via ConnectZone.`;
+
+  const handleShareProfile = async () => {
+    const shareUrl = window.location.href;
+    const shareData = {
+      title: `Profil de ${provider.name}`,
+      text: `Découvre ce prestataire sur ConnectZone : ${provider.name}`,
+      url: shareUrl,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        setShareMessage('Profil partagé !');
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        setShareMessage('Lien copié dans le presse-papiers');
+      }
+    } catch (error) {
+      setShareMessage('Impossible de partager le profil pour le moment.');
+      console.error(error);
+    }
+
+    window.setTimeout(() => setShareMessage(''), 3000);
+  };
 
   return (
     <main className="min-h-screen pt-24 pb-16 px-4">
@@ -207,12 +232,31 @@ export default function ProviderProfilePage() {
               <h2 className="text-xl font-bold font-['Montserrat'] text-[#111111] mb-4">
                 Avis clients
               </h2>
+              <div className="rounded-2xl border-2 border-red-500 bg-red-50 px-4 py-3 mb-6 animate-pulse text-red-700 font-bold">
+                Si un prestataire ne se comporte pas bien, signalez-le ici pour qu'on puisse intervenir.
+              </div>
               <div className="space-y-4">
-                {provider.reviews.slice(0, 3).map((review) => (
-                  <div
-                    key={review.id}
-                    className="bg-gray-50 rounded-xl p-4 border-2 border-gray-100"
-                  >
+                {provider.adminReview && (
+                  <div className="bg-red-50 rounded-xl p-4 border-2 border-red-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-bold text-red-700">Avis admin</span>
+                      <span className="text-sm text-red-700">ConnectZone</span>
+                    </div>
+                    <p className="text-red-700 leading-relaxed">
+                      {provider.adminReview}
+                    </p>
+                  </div>
+                )}
+                {provider.reviews.length === 0 ? (
+                  <div className="bg-gray-50 rounded-xl p-4 border-2 border-gray-100 text-[#2A2A2A]">
+                    Aucun avis client pour le moment.
+                  </div>
+                ) : (
+                  provider.reviews.slice(0, 3).map((review) => (
+                    <div
+                      key={review.id}
+                      className="bg-gray-50 rounded-xl p-4 border-2 border-gray-100"
+                    >
                     <div className="flex items-center justify-between mb-2">
                       <span className="font-bold text-[#111111]">
                         {review.author}
@@ -256,6 +300,13 @@ export default function ProviderProfilePage() {
                   Contacter par WhatsApp
                 </Button>
               </a>
+              <Button
+                onClick={handleShareProfile}
+                className="w-full sm:w-auto bg-[#4B6BFB] hover:bg-[#3a5aea] text-white font-bold py-4 rounded-xl border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-lg"
+              >
+                <Share2 className="w-5 h-5 mr-2" />
+                Partager le profil
+              </Button>
               <Link to="/prestataires" className="flex-1">
                 <Button
                   variant="outline"
@@ -265,6 +316,11 @@ export default function ProviderProfilePage() {
                 </Button>
               </Link>
             </div>
+            {shareMessage && (
+              <div className="mt-4 text-sm text-[#111111] bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl p-3">
+                {shareMessage}
+              </div>
+            )}
           </div>
         </div>
       </div>
