@@ -44,7 +44,8 @@ export default function Navigation() {
                 isScrolled ? 'text-[#111111]' : 'text-white'
               }`}
             >
-              ConnectZone
+              <span className="text-[#4B6BFB]">Connect</span>
+              <span className="text-[#FF8C00]">Zone</span>
             </span>
           </Link>
 

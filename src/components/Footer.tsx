@@ -8,8 +8,9 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link to="/" className="text-2xl font-black font-['Montserrat'] text-white mb-4 block">
-              ConnectZone
+            <Link to="/" className="text-2xl font-black font-['Montserrat'] mb-4 block">
+              <span className="text-[#4B6BFB]">Connect</span>
+              <span className="text-[#FF8C00]">Zone</span>
             </Link>
             <p className="text-gray-400 text-sm mb-4">
               Trouvez le bon pro et contactez-le directement par WhatsApp.
