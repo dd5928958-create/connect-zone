@@ -232,9 +232,6 @@ export default function ProviderProfilePage() {
               <h2 className="text-xl font-bold font-['Montserrat'] text-[#111111] mb-4">
                 Avis clients
               </h2>
-              <div className="rounded-2xl border-2 border-red-500 bg-red-50 px-4 py-3 mb-6 animate-pulse text-red-700 font-bold">
-                Si un prestataire ne se comporte pas bien, signalez-le ici pour qu'on puisse intervenir.
-              </div>
               <div className="space-y-4">
                 {provider.adminReview && (
                   <div className="bg-red-50 rounded-xl p-4 border-2 border-red-200">

@@ -257,6 +257,12 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="px-4 mb-12">
+        <div className="max-w-5xl mx-auto rounded-[28px] border-2 border-red-500 bg-red-50 px-6 py-6 shadow-[0_18px_40px_rgba(0,0,0,0.14)] animate-pulse text-red-700 font-bold text-center text-base md:text-lg">
+          Si un prestataire ne se comporte pas bien, signalez-le ici pour qu'on puisse intervenir.
+        </div>
+      </section>
+
       {/* Section 2: How it works */}
       <section
         ref={stepsRef}
