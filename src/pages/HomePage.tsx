@@ -270,7 +270,6 @@ export default function HomePage() {
               ici
             </a>
           </p>
-          <p className="mt-4 text-[#2563eb] text-lg font-black">+2290141733286</p>
           <p className="mt-2 text-red-900">pour qu'on puisse intervenir.</p>
         </div>
       </section>
