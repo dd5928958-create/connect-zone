@@ -17,8 +17,6 @@ export default function AdminPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingProvider, setEditingProvider] = useState<Provider | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -131,8 +129,6 @@ export default function AdminPage() {
 
   const handleEdit = (provider: Provider) => {
     setEditingProvider({ ...provider });
-    setImageFile(null);
-    setImagePreview(provider.image);
     setIsCreating(false);
     setIsEditDialogOpen(true);
   };
@@ -161,29 +157,8 @@ export default function AdminPage() {
       isPublished: true,
     };
     setEditingProvider(newProvider);
-    setImageFile(null);
-    setImagePreview('');
     setIsCreating(true);
     setIsEditDialogOpen(true);
-  };
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !editingProvider) return;
-
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error('L’image doit faire moins de 2 Mo');
-      return;
-    }
-
-    setImageFile(file);
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        setImagePreview(reader.result);
-      }
-    };
-    reader.readAsDataURL(file);
   };
 
   const handleSave = async () => {
@@ -200,34 +175,17 @@ export default function AdminPage() {
         : `/api/providers/${editingProvider.id}`;
       const method = isCreating ? 'POST' : 'PUT';
 
-      const formData = new FormData();
-      formData.append('name', editingProvider.name);
-      formData.append('job', editingProvider.job);
-      formData.append('location', editingProvider.location);
-      formData.append('description', editingProvider.description);
-      formData.append('fullDescription', editingProvider.fullDescription);
-      formData.append('services', JSON.stringify(editingProvider.services));
-      formData.append('phone', editingProvider.phone);
-      formData.append('image', editingProvider.image || '');
-      formData.append('isCertified', String(editingProvider.isCertified));
-      formData.append('isFeatured', String(editingProvider.isFeatured));
-      formData.append('isPopular', String(editingProvider.isPopular));
-      formData.append('responseTime', editingProvider.responseTime);
-      formData.append('rating', String(editingProvider.rating));
-      formData.append('reviewCount', String(editingProvider.reviewCount));
-      formData.append('reviews', JSON.stringify(editingProvider.reviews));
-      formData.append('category', editingProvider.category);
-      formData.append('availability', editingProvider.availability);
-      formData.append('priceRange', editingProvider.priceRange);
-      formData.append('isPublished', String(editingProvider.isPublished));
-      if (imageFile) {
-        formData.append('imageFile', imageFile);
-      }
+      const body = JSON.stringify({
+        ...editingProvider,
+      });
 
       const res = await fetch(url, {
         method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
         credentials: 'include',
-        body: formData,
+        body,
       });
 
       if (!res.ok) {
@@ -526,36 +484,25 @@ export default function AdminPage() {
 
               <div>
                 <Label className="text-[#111111] font-medium mb-2 block">
-                  Image de profil
+                  URL de l'image de profil
                 </Label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="w-full rounded-xl border-2 border-black bg-white px-3 py-2"
-                />
-                <p className="text-sm text-[#666666] mt-2">
-                  Téléversez une image pour le prestataire. Si vous souhaitez utiliser un lien, copiez-le directement dans le champ ci-dessous.
-                </p>
                 <Input
                   type="url"
                   value={editingProvider.image}
-                  onChange={(e) => {
-                    setEditingProvider({ ...editingProvider, image: e.target.value });
-                    setImageFile(null);
-                    setImagePreview(e.target.value);
-                  }}
+                  onChange={(e) =>
+                    setEditingProvider({ ...editingProvider, image: e.target.value })
+                  }
                   placeholder="/images/directory_plumber.jpg"
-                  className="rounded-xl border-2 border-black mt-3"
+                  className="rounded-xl border-2 border-black"
                 />
-                {(imagePreview || editingProvider.image) && (
+                {editingProvider.image && (
                   <div className="mt-4">
                     <span className="text-sm font-medium text-[#111111]">
                       Aperçu de l’image
                     </span>
                     <div className="mt-2 w-full max-w-xs overflow-hidden rounded-2xl border-2 border-black">
                       <img
-                        src={imagePreview || editingProvider.image}
+                        src={editingProvider.image}
                         alt="Aperçu prestataire"
                         className="w-full object-cover"
                       />

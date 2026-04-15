@@ -13,7 +13,7 @@ export default function Footer() {
               <span className="text-[#FF8C00]">Zone</span>
             </Link>
             <p className="text-gray-400 text-sm mb-4">
-              Trouvez le bon pro et contactez-le directement par WhatsApp.
+              Trouvez le bon prestataire et contactez-le directement par WhatsApp.
             </p>
             <div className="flex space-x-3">
               <a

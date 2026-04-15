@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser';
 import bcrypt from 'bcryptjs';
 import dns from 'dns';
 import jwt from 'jsonwebtoken';
-import multer from 'multer';
 import { MongoClient, ObjectId } from 'mongodb';
 
 dotenv.config();
@@ -46,7 +45,6 @@ const app = express();
 app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173', credentials: true }));
 app.use(cookieParser());
 app.use(express.json({ limit: '15mb' }));
-const upload = multer();
 
 const normalizeProvider = (doc) => {
   if (!doc) return null;
@@ -150,26 +148,18 @@ app.get('/api/providers/:id', async (req, res) => {
   res.json(normalizeProvider(provider));
 });
 
-app.post('/api/providers', authenticate, upload.single('imageFile'), async (req, res) => {
+app.post('/api/providers', authenticate, async (req, res) => {
   const provider = parseProviderPayload({ ...req.body });
   delete provider.id;
-
-  if (req.file) {
-    provider.image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-  }
 
   const result = await providersCollection.insertOne(provider);
   res.json(normalizeProvider({ _id: result.insertedId, ...provider }));
 });
 
-app.put('/api/providers/:id', authenticate, upload.single('imageFile'), async (req, res) => {
+app.put('/api/providers/:id', authenticate, async (req, res) => {
   const { id } = req.params;
   const provider = parseProviderPayload({ ...req.body });
   delete provider.id;
-
-  if (req.file) {
-    provider.image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-  }
 
   if (!ObjectId.isValid(id)) {
     return res.status(400).json({ error: 'ID invalide' });
