@@ -39,7 +39,8 @@ export const categories = [
   "Peinture",
   "Jardinage",
   "Ménage",
-  "Réparation"
+  "Réparation",
+  "Artisan"
 ];
 
 export const providers: Provider[] = [];
