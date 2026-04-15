@@ -17,6 +17,8 @@ export default function AdminPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingProvider, setEditingProvider] = useState<Provider | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -129,6 +131,8 @@ export default function AdminPage() {
 
   const handleEdit = (provider: Provider) => {
     setEditingProvider({ ...provider });
+    setImageFile(null);
+    setImagePreview(provider.image);
     setIsCreating(false);
     setIsEditDialogOpen(true);
   };
@@ -157,6 +161,8 @@ export default function AdminPage() {
       isPublished: true,
     };
     setEditingProvider(newProvider);
+    setImageFile(null);
+    setImagePreview('');
     setIsCreating(true);
     setIsEditDialogOpen(true);
   };
@@ -165,10 +171,16 @@ export default function AdminPage() {
     const file = e.target.files?.[0];
     if (!file || !editingProvider) return;
 
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('L’image doit faire moins de 2 Mo');
+      return;
+    }
+
+    setImageFile(file);
     const reader = new FileReader();
     reader.onload = () => {
       if (typeof reader.result === 'string') {
-        setEditingProvider({ ...editingProvider, image: reader.result });
+        setImagePreview(reader.result);
       }
     };
     reader.readAsDataURL(file);
@@ -188,13 +200,34 @@ export default function AdminPage() {
         : `/api/providers/${editingProvider.id}`;
       const method = isCreating ? 'POST' : 'PUT';
 
+      const formData = new FormData();
+      formData.append('name', editingProvider.name);
+      formData.append('job', editingProvider.job);
+      formData.append('location', editingProvider.location);
+      formData.append('description', editingProvider.description);
+      formData.append('fullDescription', editingProvider.fullDescription);
+      formData.append('services', JSON.stringify(editingProvider.services));
+      formData.append('phone', editingProvider.phone);
+      formData.append('image', editingProvider.image || '');
+      formData.append('isCertified', String(editingProvider.isCertified));
+      formData.append('isFeatured', String(editingProvider.isFeatured));
+      formData.append('isPopular', String(editingProvider.isPopular));
+      formData.append('responseTime', editingProvider.responseTime);
+      formData.append('rating', String(editingProvider.rating));
+      formData.append('reviewCount', String(editingProvider.reviewCount));
+      formData.append('reviews', JSON.stringify(editingProvider.reviews));
+      formData.append('category', editingProvider.category);
+      formData.append('availability', editingProvider.availability);
+      formData.append('priceRange', editingProvider.priceRange);
+      formData.append('isPublished', String(editingProvider.isPublished));
+      if (imageFile) {
+        formData.append('imageFile', imageFile);
+      }
+
       const res = await fetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
         credentials: 'include',
-        body: JSON.stringify(editingProvider),
+        body: formData,
       });
 
       if (!res.ok) {
@@ -507,20 +540,22 @@ export default function AdminPage() {
                 <Input
                   type="url"
                   value={editingProvider.image}
-                  onChange={(e) =>
-                    setEditingProvider({ ...editingProvider, image: e.target.value })
-                  }
+                  onChange={(e) => {
+                    setEditingProvider({ ...editingProvider, image: e.target.value });
+                    setImageFile(null);
+                    setImagePreview(e.target.value);
+                  }}
                   placeholder="/images/directory_plumber.jpg"
                   className="rounded-xl border-2 border-black mt-3"
                 />
-                {editingProvider.image && (
+                {(imagePreview || editingProvider.image) && (
                   <div className="mt-4">
                     <span className="text-sm font-medium text-[#111111]">
                       Aperçu de l’image
                     </span>
                     <div className="mt-2 w-full max-w-xs overflow-hidden rounded-2xl border-2 border-black">
                       <img
-                        src={editingProvider.image}
+                        src={imagePreview || editingProvider.image}
                         alt="Aperçu prestataire"
                         className="w-full object-cover"
                       />

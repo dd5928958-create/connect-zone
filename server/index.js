@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import bcrypt from 'bcryptjs';
 import dns from 'dns';
 import jwt from 'jsonwebtoken';
+import multer from 'multer';
 import { MongoClient, ObjectId } from 'mongodb';
 
 dotenv.config();
@@ -44,12 +45,42 @@ const providersCollection = db.collection(MONGODB_COLLECTION);
 const app = express();
 app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173', credentials: true }));
 app.use(cookieParser());
-app.use(express.json());
+app.use(express.json({ limit: '15mb' }));
+const upload = multer();
 
 const normalizeProvider = (doc) => {
   if (!doc) return null;
   const { _id, ...rest } = doc;
   return { id: _id.toString(), ...rest };
+};
+
+const parseProviderPayload = (payload) => {
+  const provider = { ...payload };
+
+  if (typeof provider.isCertified === 'string') provider.isCertified = provider.isCertified === 'true';
+  if (typeof provider.isFeatured === 'string') provider.isFeatured = provider.isFeatured === 'true';
+  if (typeof provider.isPopular === 'string') provider.isPopular = provider.isPopular === 'true';
+  if (typeof provider.isPublished === 'string') provider.isPublished = provider.isPublished === 'true';
+  if (typeof provider.rating === 'string') provider.rating = Number(provider.rating);
+  if (typeof provider.reviewCount === 'string') provider.reviewCount = Number(provider.reviewCount);
+
+  if (typeof provider.services === 'string') {
+    try {
+      provider.services = JSON.parse(provider.services);
+    } catch {
+      provider.services = [];
+    }
+  }
+
+  if (typeof provider.reviews === 'string') {
+    try {
+      provider.reviews = JSON.parse(provider.reviews);
+    } catch {
+      provider.reviews = [];
+    }
+  }
+
+  return provider;
 };
 
 const authenticate = (req, res, next) => {
@@ -119,18 +150,26 @@ app.get('/api/providers/:id', async (req, res) => {
   res.json(normalizeProvider(provider));
 });
 
-app.post('/api/providers', authenticate, async (req, res) => {
-  const provider = { ...req.body };
+app.post('/api/providers', authenticate, upload.single('imageFile'), async (req, res) => {
+  const provider = parseProviderPayload({ ...req.body });
   delete provider.id;
+
+  if (req.file) {
+    provider.image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+  }
 
   const result = await providersCollection.insertOne(provider);
   res.json(normalizeProvider({ _id: result.insertedId, ...provider }));
 });
 
-app.put('/api/providers/:id', authenticate, async (req, res) => {
+app.put('/api/providers/:id', authenticate, upload.single('imageFile'), async (req, res) => {
   const { id } = req.params;
-  const provider = { ...req.body };
+  const provider = parseProviderPayload({ ...req.body });
   delete provider.id;
+
+  if (req.file) {
+    provider.image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+  }
 
   if (!ObjectId.isValid(id)) {
     return res.status(400).json({ error: 'ID invalide' });
