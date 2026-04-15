@@ -261,13 +261,15 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto rounded-[28px] border-[4px] border-red-600 bg-red-100 px-6 py-8 shadow-[0_20px_50px_rgba(255,0,0,0.08)] animate-pulse text-red-900 font-black text-center text-base md:text-xl tracking-tight">
           Si un prestataire ne se comporte pas bien, signalez-le 
           <a
-            href="https://wa.me/33612345678?text=Bonjour%20ConnectZone%20je%20souhaite%20signaler%20un%20prestataire"
+            href="https://wa.me/2290141733286?text=Bonjour%20ConnectZone%20je%20souhaite%20signaler%20un%20prestataire"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#2563eb] underline decoration-[#2563eb] decoration-2 hover:text-[#1d4ed8]"
           >
             ici
-          </a>{' '}pour qu'on puisse intervenir.
+          </a>
+          <div className="mt-3 text-[#2563eb] text-lg font-black">+2290141733286</div>
+          <div className="mt-2 text-red-900">pour qu'on puisse intervenir.</div>
         </div>
       </section>
 
